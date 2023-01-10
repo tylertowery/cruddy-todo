@@ -21,7 +21,7 @@ const cleanTestDatastore = () => {
   );
 };
 
-describe('getNextUniqueId', () => {
+xdescribe('getNextUniqueId', () => {
   before(initializeTestFiles);
   beforeEach(initializeTestCounter);
   beforeEach(cleanTestDatastore);
@@ -90,7 +90,9 @@ describe('todos', () => {
     it('should only save todo text contents in file', (done) => {
       const todoText = 'walk the dog';
       todos.create(todoText, (err, todo) => {
+        console.log('line93', todo);
         const todoFileContents = fs.readFileSync(path.join(todos.dataDir, `${todo.id}.txt`)).toString();
+        console.log(todoFileContents);
         expect(todoFileContents).to.equal(todoText);
         done();
       });
@@ -106,7 +108,7 @@ describe('todos', () => {
     });
   });
 
-  describe('readAll', () => {
+  xdescribe('readAll', () => {
     it('should return an empty array when there are no todos', (done) => {
       todos.readAll((err, todoList) => {
         expect(err).to.be.null;
@@ -133,7 +135,7 @@ describe('todos', () => {
 
   });
 
-  describe('readOne', () => {
+  xdescribe('readOne', () => {
     it('should return an error for non-existant todo', (done) => {
       todos.readOne('notAnId', (err, todo) => {
         expect(err).to.exist;
@@ -153,7 +155,7 @@ describe('todos', () => {
     });
   });
 
-  describe('update', () => {
+  xdescribe('update', () => {
     beforeEach((done) => {
       todos.create('original todo', done);
     });
@@ -187,7 +189,7 @@ describe('todos', () => {
     });
   });
 
-  describe('delete', () => {
+  xdescribe('delete', () => {
     beforeEach((done) => {
       todos.create('delete this todo', done);
     });

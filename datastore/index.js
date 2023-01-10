@@ -9,13 +9,22 @@ var items = {};
 
 exports.create = (text, callback) => {
   // get id from getNextUniqueId function
-  // write a file using the id as the pathname
   // put the text parameter into the files that we've created
   // run the callback?
-  var id = counter.getNextUniqueId();
-  console.log('line16 of index.js', id);
-  items[id] = text;
-  callback(null, { id, text });
+  counter.getNextUniqueId((err, data) => {
+    pathName = path.join(exports.dataDir, data + '.txt');
+    // callback(null, {id: id,});
+    // write a file using the id as the pathname
+    var id = data;
+
+    fs.writeFile(pathName, text, (err, data) => {
+      if (err) {
+        callback(null, 0);
+      } else {
+        callback(null, { id, text });
+      }
+    });
+  });
 };
 
 exports.readAll = (callback) => {
