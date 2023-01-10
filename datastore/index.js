@@ -28,13 +28,37 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  // create a array
+  var dataArray = [];
+  // iterate through exports.dataDir and push all of the id's into the array
+  fs.readdir(exports.dataDir, (err, files) => {
+    console.log(files);
+    for (let i = 0; i < files.length; i++) {
+      dataArray.push({ id: files[i].split('.')[0], text: files[i].split('.')[0] });
+      // fs.readFile(`${exports.dataDir}/${files[i]}`, 'utf8', (err, data) => {
+      //   if (err) {
+      //     console.log('error happening');
+      //     callback(null, 0);
+      //   } else {
+      //     id = files[i];
+      //     text = data;
+      //     dataArray.push({ id, text });
+      //   }
+      // });
+    }
+    callback(null, dataArray);
+
   });
-  callback(null, data);
+  // var data = _.map(items, (text, id) => {
+  //   return { id, text };
+  // });
 };
 
 exports.readOne = (id, callback) => {
+  // if exports.dataDir + the id isn't defined
+  // callback new Error like below
+  // else
+  // callback like below
   var text = items[id];
   if (!text) {
     callback(new Error(`No item with id: ${id}`));
