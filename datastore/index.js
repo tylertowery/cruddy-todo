@@ -8,7 +8,12 @@ var items = {};
 // Public API - Fix these CRUD functions ///////////////////////////////////////
 
 exports.create = (text, callback) => {
+  // get id from getNextUniqueId function
+  // write a file using the id as the pathname
+  // put the text parameter into the files that we've created
+  // run the callback?
   var id = counter.getNextUniqueId();
+  console.log('line16 of index.js', id);
   items[id] = text;
   callback(null, { id, text });
 };

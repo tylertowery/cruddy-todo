@@ -40,13 +40,14 @@ const writeCounter = (count, callback) => {
 
 exports.getNextUniqueId = (callback) => {
   // call readcounter, will get data
+  let id;
   readCounter( (err, data) => {
     if (err) {
       callback(null, 0);
     } else {
-      console.log('line47', data);
       let newData = ++data;
-      console.log('line49', newData);
+      id = zeroPaddedNumber(newData);
+      console.log('line 50 of counter.js', id);
       writeCounter(newData, (err, data) => {
         if (err) {
           callback(null, 0);
@@ -55,7 +56,10 @@ exports.getNextUniqueId = (callback) => {
         }
       });
     }
-  }); // increment the data
+  });
+  console.log('line 59 of counter.js', id);
+  return id;
+  // increment the data
   // call write counter with incremented data
 };
 
