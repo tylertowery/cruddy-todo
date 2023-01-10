@@ -21,7 +21,7 @@ const cleanTestDatastore = () => {
   );
 };
 
-xdescribe('getNextUniqueId', () => {
+describe('getNextUniqueId', () => {
   before(initializeTestFiles);
   beforeEach(initializeTestCounter);
   beforeEach(cleanTestDatastore);
@@ -66,7 +66,7 @@ describe('todos', () => {
   beforeEach(initializeTestCounter);
   beforeEach(cleanTestDatastore);
 
-  xdescribe('create', () => {
+  describe('create', () => {
     it('should create a new file for each todo', (done) => {
       todos.create('todo1', (err, data) => {
         const todoCount = fs.readdirSync(todos.dataDir).length;
@@ -155,7 +155,7 @@ describe('todos', () => {
     });
   });
 
-  xdescribe('update', () => {
+  describe('update', () => {
     beforeEach((done) => {
       todos.create('original todo', done);
     });
@@ -189,7 +189,7 @@ describe('todos', () => {
     });
   });
 
-  xdescribe('delete', () => {
+  describe('delete', () => {
     beforeEach((done) => {
       todos.create('delete this todo', done);
     });

@@ -13,7 +13,6 @@ exports.create = (text, callback) => {
   // run the callback?
   counter.getNextUniqueId((err, data) => {
     pathName = path.join(exports.dataDir, data + '.txt');
-    // callback(null, {id: id,});
     // write a file using the id as the pathname
     var id = data;
 
@@ -32,7 +31,6 @@ exports.readAll = (callback) => {
   var dataArray = [];
   // iterate through exports.dataDir and push all of the id's into the array
   fs.readdir(exports.dataDir, (err, files) => {
-    console.log(files);
     for (let i = 0; i < files.length; i++) {
       dataArray.push({ id: files[i].split('.')[0], text: files[i].split('.')[0] });
       // fs.readFile(`${exports.dataDir}/${files[i]}`, 'utf8', (err, data) => {
@@ -47,44 +45,61 @@ exports.readAll = (callback) => {
       // });
     }
     callback(null, dataArray);
-
   });
-  // var data = _.map(items, (text, id) => {
-  //   return { id, text };
-  // });
 };
 
 exports.readOne = (id, callback) => {
-  // if exports.dataDir + the id isn't defined
-  // callback new Error like below
-  // else
-  // callback like below
-  var text = items[id];
-  if (!text) {
+  let currentDir = `${exports.dataDir}/${id}.txt`;
+  if (!fs.existsSync(currentDir)) {
+    console.log('error');
     callback(new Error(`No item with id: ${id}`));
   } else {
-    callback(null, { id, text });
+    fs.readFile(currentDir, 'utf8', (err, data) => {
+      if (err) {
+        console.log('error has occur');
+        callback(null, 0);
+      } else {
+        console.log('line 70: ', data);
+        var text = data;
+        callback(null, { id, text });
+      }
+    });
   }
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
+  // basically the same as create
+  // if the id is already taken it will just save over it and create a new file at that destination
+
+  var pathName = path.join(exports.dataDir, id + '.txt');
+  if (!fs.existsSync(pathName)) {
+    console.log('No file exists with the given name.');
     callback(new Error(`No item with id: ${id}`));
   } else {
-    items[id] = text;
-    callback(null, { id, text });
+    fs.writeFile(pathName, text, (err, data) => {
+      if (err) {
+        callback(null, 0);
+      } else {
+        callback(null, { id, text});
+      }
+    });
   }
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
+  // access the file using the id
+  // delete the file using fs.unlink()
+  var pathName = path.join(exports.dataDir, id + '.txt');
+  if (!fs.existsSync(pathName)) {
     callback(new Error(`No item with id: ${id}`));
   } else {
-    callback();
+    fs.unlink(pathName, err => {
+      if (err) {
+        callback(null, 0);
+      } else {
+        callback();
+      }
+    });
   }
 };
 
